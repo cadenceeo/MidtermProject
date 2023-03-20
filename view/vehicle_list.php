@@ -79,7 +79,6 @@
                         <td><?= $vehicle['class'] ?></td>
                         <td><?= $vehicle['price'] ?></td>
                 </tr>
-                </div>
         <?php endforeach; ?>
 
     </section>
