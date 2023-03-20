@@ -1,0 +1,44 @@
+<?php
+require('model/database.php');
+require('model/vehicle_db.php');
+
+$vehicle_id = filter_input(INPUT_POST, 'vehicle_id', FILTER_VALIDATE_INT);
+$year = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);
+$model = filter_input(INPUT_POST, 'model', FILTER_VALIDATE_INT);
+$make = filter_input(INPUT_POST, 'make', FILTER_VALIDATE_INT);
+$type = filter_input(INPUT_POST, 'type', FILTER_VALIDATE_INT);
+
+$make_id = filter_input(INPUT_POST, 'make_id', FILTER_VALIDATE_INT);
+if (!$make_id) {
+    $make_id = filter_input(INPUT_GET, 'make_id', FILTER_VALIDATE_INT);
+}
+
+$type_id = filter_input(INPUT_POST, 'type_id', FILTER_VALIDATE_INT);
+if (!$type_id) {
+    $type_id = filter_input(INPUT_GET, 'type_id', FILTER_VALIDATE_INT);
+}
+
+
+$action = filter_input(INPUT_POST, 'action', FILTER_UNSAFE_RAW);
+if (!$action) {
+    $action = filter_input(INPUT_GET, 'action', FILTER_UNSAFE_RAW);
+    if (!$action) {
+        $action = 'list_vehicles';
+    }
+}
+
+switch ($action) {
+    case "list_vehicles":
+        $vehicles = get_vehicles();
+        $makes = get_vehicle_make($make_id);
+        $types = get_vehicle_type($type_id);
+        include('view/vehicle_list.php');
+        break;
+    default:
+        $vehicles = get_vehicles();
+        $make = get_vehicle_make($make_id);
+        $type = get_vehicle_type($type_id);
+        include('view/vehicle_list.php');
+}
+
+?>
