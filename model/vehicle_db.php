@@ -41,4 +41,19 @@ function get_vehicle_type($type_id){
     return $types;
 }
 
+function get_vehicle_class($class_id){
+    if (!$class_id) {
+        return "All types";
+    }
+    global $db;
+    $query = 'SELECT * FROM vehicles WHERE class_id = :class_id';
+    $statement = $db->prepare($query);
+    $statement->bindValue(':class_id', $class_id);
+    $statement->execute();
+    $class = $statement->fetch();
+    $statement->closeCursor();
+    $classes = $class['class'];
+    return $classes;
+}
+
 ?>
