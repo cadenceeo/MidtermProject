@@ -58,7 +58,7 @@
 <?php if ($vehicles) { ?>
 
         
-        <table class="table table-striped" style="width:70%">
+        <table class="table table-striped" style="padding: 1em">
                 <tr>
                     <th><label>Year </label></th>
                     <th><label>Make </label></th>
