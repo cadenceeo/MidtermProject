@@ -29,23 +29,34 @@ $action = filter_input(INPUT_POST, 'action', FILTER_UNSAFE_RAW);
 if (!$action) {
     $action = filter_input(INPUT_GET, 'action', FILTER_UNSAFE_RAW);
     if (!$action) {
-        $action = 'list_vehicles';
+        $action = 'show_vehicles';
     }
 }
 
 switch ($action) {
-    case "list_vehicles":
+    case "show_vehicles":
         $vehicles = get_vehicles();
         $makes = get_makes();
         $classes = get_classes();
         $types = get_types();
-        include('view/vehicle_list.php');
+        include('view/show_vehicles.php');
+        break;
+    case "delete_vehicle":
+        if ($vehicle_id) {
+            delete_vehicle($vehicle_id);
+        } else {
+            $error = "Missing or incorrect vehicle id.";
+            include('view/error.php');
+        }
+    case "add_vehicle":
+        add_vehicle($year,$model, $price, $type_id, $class_id, $make_id);
+        header("Location: .?action=show_vehicles");
         break;
     default:
         $vehicles = get_vehicles();
         $type = get_vehicle_type($type_id);
         $class = get_vehicle_class($class_id);
-        include('view/vehicle_list.php');
+        include('view/show_vehicles.php');
 }
 
 ?>

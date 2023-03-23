@@ -1,6 +1,6 @@
 <?php include("view/header.php") ?>
 
-</br></br>
+</br>
 <header>
     <h1>Current Vehicles</h1>
     <hr style="height:5px">
@@ -52,15 +52,23 @@
                 <?php endforeach; ?>
             </select>
 </form>
-</header>
 
+
+</header>
+<form action="." method="get">
+    <input type="radio" id="price" name="price" value="Price"> 
+    <label for="price">Price</label>
+    <input type="radio" id="year" name="year" value="CSS">
+    <label for="year">Year</label>
+    <button class="add-button bold">Go</button>
+</form>
 
 <?php if ($vehicles) { ?>
 
         
-        <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+        <table style="border:1px solid black;">
                 <tr>
-                    <th><label>Year </label></th>
+                    <th><label> Year </label></th>
                     <th><label>Make </label></th>
                     <th><label>Model </label></th>
                     <th><label>Type </label></th>
@@ -70,12 +78,12 @@
             <?php foreach ($vehicles as $vehicle) : ?>
             
                 <tr>
-                        <td><?= $vehicle['year'] ?></td>
-                        <td><?= $make['make'] ?></td>
-                        <td><?= $vehicle['model'] ?></td>
-                        <td><?= $type['type'] ?></td>
-                        <td><?= $class['class'] ?></td>
-                        <td><?= $vehicle['price'] ?></td>
+                        <td style="width: 2%"><?= $vehicle['year'] ?></td>
+                        <td style="width: 2%"><?= $make['make'] ?></td>
+                        <td style="width: 2%"><?= $vehicle['model'] ?></td>
+                        <td style="width: 2%"><?= $type['type'] ?></td>
+                        <td style="width: 2%"><?= $class['class'] ?></td>
+                        <td style="width: 50%">$ <?= $vehicle['price']?></td>
                 </tr>
         <?php endforeach; ?>
 

@@ -96,4 +96,29 @@ function get_make_by_vehicle($make_id)
     return $makes;
 }
 
+function delete_vehicle($vehicle_id)
+{
+    global $db;
+    $query = 'DELETE FROM vehicles WHERE ID = :vehicle_id';
+    $statement = $db->prepare($query);
+    $statement->bindValue(':vehicle_id', $vehicle_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
+function add_vehicle($year,$model, $price, $type_id, $class_id, $make_id )
+{
+    global $db;
+    $query = 'INSERT INTO vehicles ( year,model, price, type_id, class_id, make_id  ) VALUES (:year, :model, :price, :type_id, :class_id, :make_id)';
+    $statement = $db->prepare($query);
+    $statement->bindValue(':year', $year);
+    $statement->bindValue(':model', $model);
+    $statement->bindValue(':price', $price);
+    $statement->bindValue(':type_id', $type_id);
+    $statement->bindValue(':class_id', $class_id);
+    $statement->bindValue(':make_id', $make_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
 ?>
