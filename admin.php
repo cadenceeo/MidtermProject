@@ -40,14 +40,22 @@ switch ($action) {
         $makes = get_vehicle_make($make_id);
         $types = get_vehicle_type($type_id);
         $class = get_vehicle_class($class_id);
-        include('view/vehicle_list.php');
+        include('admin/vehicle_list.php');
         break;
+    case "delete_vehicle":
+        if ($id) {
+            delete_vehicle($id);
+            header("Location: .?action=admin");
+        } else {
+            $error = "Missing or incorrect assignment id.";
+            include('admin/error.php');
+        }
     default:
         $vehicles = get_vehicles();
         $make = get_vehicle_make($make_id);
         $type = get_vehicle_type($type_id);
         $class = get_vehicle_class($class_id);
-        include('view/vehicle_list.php');
+        include('admin/vehicle_list.php');
 }
 
 ?>
