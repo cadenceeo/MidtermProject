@@ -1,7 +1,6 @@
 <?php
 require('model/database.php');
 require('model/vehicle_db.php');
-require('model/admin_db.php');
 
 $vehicle_id = filter_input(INPUT_POST, 'vehicle_id', FILTER_VALIDATE_INT);
 $year = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);
@@ -37,14 +36,15 @@ if (!$action) {
 switch ($action) {
     case "list_vehicles":
         $vehicles = get_vehicles();
-        $makes = get_vehicle_make($make_id);
-        $types = get_vehicle_type($type_id);
-        $class = get_vehicle_class($class_id);
+        $makes = get_makes();
+        $classes = get_classes();
+        $types = get_types();
         include('view/vehicle_list.php');
         break;
     default:
         $vehicles = get_vehicles();
-        $make = get_vehicle_make($make_id);
+        
+        $make = get_make_by_vehicle($make_id);
         $type = get_vehicle_type($type_id);
         $class = get_vehicle_class($class_id);
         include('view/vehicle_list.php');

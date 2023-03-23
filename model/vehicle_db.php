@@ -10,19 +10,15 @@ function get_vehicles()
     return $vehicles;
 }
 
-function get_vehicle_make($make_id){
-    if (!$make_id) {
-        return "All makes";
-    }
+function get_types()
+{
     global $db;
-    $query = 'SELECT * FROM vehicles WHERE make_id = :make_id';
+    $query = 'SELECT * FROM types ';
     $statement = $db->prepare($query);
-    $statement->bindValue(':make_id', $make_id);
     $statement->execute();
-    $make = $statement->fetch();
+    $types = $statement->fetchAll();
     $statement->closeCursor();
-    $makes = $make['make'];
-    return $makes;
+    return $types;
 }
 
 
@@ -41,12 +37,23 @@ function get_vehicle_type($type_id){
     return $types;
 }
 
+function get_classes()
+{
+    global $db;
+    $query = 'SELECT * FROM classes ';
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $classes = $statement->fetchAll();
+    $statement->closeCursor();
+    return $classes;
+}
+
 function get_vehicle_class($class_id){
     if (!$class_id) {
         return "All types";
     }
     global $db;
-    $query = 'SELECT * FROM vehicles WHERE class_id = :class_id';
+    $query = 'SELECT * FROM classes WHERE class_id = :class_id';
     $statement = $db->prepare($query);
     $statement->bindValue(':class_id', $class_id);
     $statement->execute();
@@ -54,6 +61,39 @@ function get_vehicle_class($class_id){
     $statement->closeCursor();
     $classes = $class['class'];
     return $classes;
+}
+
+function get_makes()
+{
+    global $db;
+    $query = 'SELECT * FROM makes ';
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $makes = $statement->fetchAll();
+    $statement->closeCursor();
+    return $makes;
+}
+
+
+function get_make_by_vehicle($make_id)
+{
+    global $db;
+    if ($make_id) {
+        $query = 'SELECT A.ID, A.Year, A.model, A.price, C.make_id From makes A
+            LEFT JOIN vehicles C ON A.make_id = C.make_id
+                WHERE A.make_id = :make_id ';
+    } else {
+        $query = 'SELECT A.ID, A.Year, A.mode, A.price, C.make_id From makes A
+        LEFT JOIN vehicles C ON A.make_id = C.make_id ';
+    }
+    $statement = $db->prepare($query);
+    if ($make_id) {
+        $statement->bindValue(':courseID', $make_id);
+    }
+    $statement->execute();
+    $makes = $statement->fetchAll();
+    $statement->closeCursor();
+    return $makes;
 }
 
 ?>
