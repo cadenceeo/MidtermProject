@@ -7,6 +7,7 @@ $year = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);
 $model = filter_input(INPUT_POST, 'model', FILTER_VALIDATE_INT);
 $make = filter_input(INPUT_POST, 'make', FILTER_VALIDATE_INT);
 $type = filter_input(INPUT_POST, 'type', FILTER_VALIDATE_INT);
+$price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_INT);
 
 $make_id = filter_input(INPUT_POST, 'make_id', FILTER_VALIDATE_INT);
 if (!$make_id) {
@@ -49,8 +50,14 @@ switch ($action) {
             include('view/error.php');
         }
     case "add_vehicle":
-        add_vehicle($year,$model, $price, $type_id, $class_id, $make_id);
-        header("Location: .?action=show_vehicles");
+        if($year && $model && $price && $type_id && $class_id && $make_id){
+            add_vehicle($year,$model, $price, $type_id, $class_id, $make_id);
+            header("Location: .?action=$show_vehicles");
+        }else{
+            $error_message = "Invalid vehicle data .Check all felids and try again";
+            include("view/error.php");
+            exit();
+        }
         break;
     default:
         $vehicles = get_vehicles();
