@@ -1,10 +1,12 @@
 <?php
 require('model/database.php');
 require('model/vehicle_db.php');
+require('model/admin_db.php');
 
 $vehicle_id = filter_input(INPUT_POST, 'vehicle_id', FILTER_VALIDATE_INT);
 $year = filter_input(INPUT_POST, 'year', FILTER_VALIDATE_INT);
 $model = filter_input(INPUT_POST, 'model', FILTER_VALIDATE_INT);
+$class = filter_input(INPUT_POST, 'class', FILTER_VALIDATE_INT);
 $make = filter_input(INPUT_POST, 'make', FILTER_VALIDATE_INT);
 $type = filter_input(INPUT_POST, 'type', FILTER_VALIDATE_INT);
 $price = filter_input(INPUT_POST, 'price', FILTER_VALIDATE_INT);
@@ -50,6 +52,7 @@ switch ($action) {
             include('view/error.php');
         }
     case "add_vehicle":
+        include('view/add_vehicle.php');
         if($year && $model && $price && $type_id && $class_id && $make_id){
             add_vehicle($year,$model, $price, $type_id, $class_id, $make_id);
             header("Location: .?action=$show_vehicles");
@@ -59,8 +62,51 @@ switch ($action) {
             exit();
         }
         break;
+    case "add_make":
+        if($make){
+            add_make($make);
+        }
+        $makes = get_makes();
+        include('view/add_make.php');
+        break;
+    case "add_type":
+        if($type){
+            add_type($type);
+        }
+        $types = get_types();
+        include('view/add_type.php');
+        break;
+    case "add_class":
+        if($class){
+            add_class($class);
+        }
+        $classes = get_classes();
+        include('view/add_class.php');
+        break;
+    case "delete_make":
+        if ($make_id) {
+            delete_make($make_id);
+        } else {
+            $error = "Missing or incorrect make id.";
+            include('view/error.php');
+        }
+    case "delete_type":
+        if ($type_id) {
+            delete_type($type_id);
+        } else {
+            $error = "Missing or incorrect type id.";
+            include('view/error.php');
+        }
+    case "delete_class":
+        if ($class_id) {
+            delete_class($class_id);
+        } else {
+            $error = "Missing or incorrect class id.";
+            include('view/error.php');
+        }
     default:
         $vehicles = get_vehicles();
+        $make = get_vehicle_make($make_id);
         $type = get_vehicle_type($type_id);
         $class = get_vehicle_class($class_id);
         include('view/show_vehicles.php');

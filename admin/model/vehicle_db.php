@@ -74,51 +74,20 @@ function get_makes()
     return $makes;
 }
 
-
-function get_make_by_vehicle($make_id)
-{
+function get_vehicle_make($make_id){
+    if (!$make_id) {
+        return "All makes";
+    }
     global $db;
-    if ($make_id) {
-        $query = 'SELECT A.ID, A.Year, A.model, A.price, C.make_id From makes A
-            LEFT JOIN vehicles C ON A.make_id = C.make_id
-                WHERE A.make_id = :make_id ';
-    } else {
-        $query = 'SELECT A.ID, A.Year, A.mode, A.price, C.make_id From makes A
-        LEFT JOIN vehicles C ON A.make_id = C.make_id ';
-    }
+    $query = 'SELECT * FROM makes WHERE make_id = :make_id';
     $statement = $db->prepare($query);
-    if ($make_id) {
-        $statement->bindValue(':courseID', $make_id);
-    }
+    $statement->bindValue(':make_id', $make_id);
     $statement->execute();
-    $makes = $statement->fetchAll();
+    $make = $statement->fetch();
     $statement->closeCursor();
+    $makes = $make['make'];
     return $makes;
 }
 
-function delete_vehicle($vehicle_id)
-{
-    global $db;
-    $query = 'DELETE FROM vehicles WHERE ID = :vehicle_id';
-    $statement = $db->prepare($query);
-    $statement->bindValue(':vehicle_id', $vehicle_id);
-    $statement->execute();
-    $statement->closeCursor();
-}
-
-function add_vehicle($year,$model, $price, $type_id, $class_id, $make_id )
-{
-    global $db;
-    $query = 'INSERT INTO vehicles ( year,model, price, type_id, class_id, make_id  ) VALUES (:year, :model, :price, :type_id, :class_id, :make_id)';
-    $statement = $db->prepare($query);
-    $statement->bindValue(':year', $year);
-    $statement->bindValue(':model', $model);
-    $statement->bindValue(':price', $price);
-    $statement->bindValue(':type_id', $type_id);
-    $statement->bindValue(':class_id', $class_id);
-    $statement->bindValue(':make_id', $make_id);
-    $statement->execute();
-    $statement->closeCursor();
-}
 
 ?>
